@@ -59,8 +59,8 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
             y="1"
             width="98"
             height="38"
-            rx="20"
-            ry="20"
+            rx="18"
+            ry="18"
             pathLength={1}
             fill="none"
           />

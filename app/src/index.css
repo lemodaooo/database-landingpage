@@ -252,8 +252,8 @@
   stroke: rgba(255, 255, 255, 0.9);
   stroke-width: 0.8;
   stroke-linecap: round;
-  /* 15% lit segment, 85% gap */
-  stroke-dasharray: 0.15 0.85;
+  /* 8% lit segment, 92% gap */
+  stroke-dasharray: 0.08 0.92;
   stroke-dashoffset: 1;
   animation: shimmer-border-move var(--speed, 3s) linear infinite;
 }

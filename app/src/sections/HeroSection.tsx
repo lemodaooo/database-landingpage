@@ -70,16 +70,14 @@ export function HeroSection() {
                   <ArrowRight className="w-4 h-4" />
                 </ShimmerButton>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
-                <ShimmerButton
-                  className="flex items-center gap-2 px-6 py-3 text-sm font-medium border border-zinc-800/80 text-white bg-transparent"
-                  background="rgba(24,24,27,0.4)"
-                  borderRadius="999px"
-                >
-                  <FileText className="w-4 h-4" />
-                  Documentation
-                </ShimmerButton>
-              </motion.div>
+              {/* Documentation - static outline button, no shimmer / motion effect */}
+              <button
+                type="button"
+                className="flex items-center gap-2 px-6 py-3 bg-transparent text-white text-sm font-medium rounded-full border border-zinc-700"
+              >
+                <FileText className="w-4 h-4" />
+                Documentation
+              </button>
             </motion.div>
 
             {/* Trusted By - Refined logos */}
@@ -124,7 +122,7 @@ export function HeroSection() {
           </div>
 
           {/* Right content - Floating Cards */}
-          <div className="relative h-[500px] lg:h-[600px]">
+          <div className="relative h-[500px] lg:h-[600px] -translate-x-10">
             {/* Card 1 - DELIVER (Top Right) */}
             <motion.div
               initial={{ x: 30, opacity: 0 }}

@@ -6,12 +6,14 @@ const sources = [
   { name: 'Slack', icon: '✱' },
   { name: 'Zapier', icon: 'Z' },
   { name: 'GitHub', icon: '◉' },
+  { name: 'Segment', icon: '∑' },
 ];
 
 const processors = [
   { name: 'Azure', icon: '▦' },
   { name: 'AWS', icon: 'aws' },
   { name: 'Vercel', icon: '▲' },
+  { name: 'GCP', icon: 'G' },
 ];
 
 export function IngestionSection() {
@@ -79,8 +81,11 @@ export function IngestionSection() {
               <div className="flex justify-between mb-2">
                 {/* Ingestion Sources */}
                 <div>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-3">INGESTION SOURCES</p>
-                  <div className="flex gap-2">
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
+                    INGESTION SOURCES
+                  </p>
+                  {/* 单排 5 个 source，左侧 */}
+                  <div className="flex gap-2 flex-nowrap">
                     {sources.map((source, i) => (
                       <motion.div
                         key={source.name}
@@ -144,13 +149,19 @@ export function IngestionSection() {
                 </div>
               </div>
 
-              {/* Curved connection lines - Bezier curves */}
+              {/* Curved connection lines - from first-row source tiles to POST card */}
               <div className="relative h-24 -mt-4">
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 96" fill="none" preserveAspectRatio="none">
-                  {/* Curved lines from sources to center */}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 400 96"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  {/* 从 5 个 INGESTION SOURCES 方块底部中心柔和汇聚到 POST 卡片顶部中心
+                      尾段保持近似水平，视觉上在同一高度 */}
                   <motion.path
-                    d="M25 0 C25 30, 80 50, 200 60"
-                    stroke="url(#curveGrad1)"
+                    d="M35 22 C35 46, 120 60, 185 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
@@ -158,8 +169,8 @@ export function IngestionSection() {
                     transition={{ duration: 1, delay: 0.5 }}
                   />
                   <motion.path
-                    d="M70 0 C70 25, 110 45, 200 60"
-                    stroke="url(#curveGrad1)"
+                    d="M70 22 C70 48, 135 62, 190 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
@@ -167,8 +178,8 @@ export function IngestionSection() {
                     transition={{ duration: 1, delay: 0.6 }}
                   />
                   <motion.path
-                    d="M115 0 C115 20, 145 40, 200 60"
-                    stroke="url(#curveGrad1)"
+                    d="M105 22 C105 50, 150 64, 195 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
@@ -176,19 +187,29 @@ export function IngestionSection() {
                     transition={{ duration: 1, delay: 0.7 }}
                   />
                   <motion.path
-                    d="M160 0 C160 15, 180 35, 200 60"
-                    stroke="url(#curveGrad1)"
+                    d="M140 22 C140 52, 165 66, 197 78"
+                    stroke="url(#ingestCurveGrad)"
+                    strokeWidth="1"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.75 }}
+                  />
+                  <motion.path
+                    d="M175 22 C175 54, 180 68, 200 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
                     transition={{ duration: 1, delay: 0.8 }}
                   />
-                  
-                  {/* Curved lines from center to processors */}
+
+                  {/* 从 4 个 STREAM PROCESSING 方块底部中心柔和汇聚到 POST 卡片顶部中心
+                      采用与左侧近似镜像的控制点，尾段近似水平 */}
                   <motion.path
-                    d="M200 60 C240 55, 280 35, 300 0"
-                    stroke="url(#curveGrad2)"
+                    d="M245 48 C240 60, 225 70, 215 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
@@ -196,32 +217,37 @@ export function IngestionSection() {
                     transition={{ duration: 1, delay: 0.9 }}
                   />
                   <motion.path
-                    d="M200 60 C250 50, 300 30, 340 0"
-                    stroke="url(#curveGrad2)"
+                    d="M280 48 C268 62, 238 72, 210 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
+                    transition={{ duration: 1, delay: 1.0 }}
                   />
                   <motion.path
-                    d="M200 60 C260 45, 320 25, 375 0"
-                    stroke="url(#curveGrad2)"
+                    d="M315 48 C296 64, 248 74, 205 78"
+                    stroke="url(#ingestCurveGrad)"
                     strokeWidth="1"
                     fill="none"
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
                     transition={{ duration: 1, delay: 1.1 }}
                   />
+                  <motion.path
+                    d="M350 48 C322 66, 255 76, 200 78"
+                    stroke="url(#ingestCurveGrad)"
+                    strokeWidth="1"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 1.2 }}
+                  />
 
                   <defs>
-                    <linearGradient id="curveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(100, 100, 110, 0.3)" />
-                      <stop offset="100%" stopColor="rgba(59, 130, 246, 0.5)" />
-                    </linearGradient>
-                    <linearGradient id="curveGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="rgba(59, 130, 246, 0.5)" />
-                      <stop offset="100%" stopColor="rgba(100, 100, 110, 0.3)" />
+                    <linearGradient id="ingestCurveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(148, 163, 184, 0.35)" />
+                      <stop offset="100%" stopColor="rgba(59, 130, 246, 0.6)" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -229,7 +255,7 @@ export function IngestionSection() {
 
               {/* Webhook request card */}
               <motion.div
-                className="mb-6 rounded-2xl border border-zinc-800/50 p-4"
+                className="mb-2 rounded-2xl border border-zinc-800/50 p-4"
                 style={{ background: 'rgba(18, 18, 22, 0.9)' }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -252,8 +278,13 @@ export function IngestionSection() {
                 </p>
               </motion.div>
 
-              {/* NORMALIZER */}
-              <div className="flex justify-center mb-6">
+              {/* Dashed line from webhook card down到 NORMALIZER */}
+              <div className="flex justify-center mb-2">
+                <div className="w-px h-4 border-l border-dashed border-zinc-700/50" />
+              </div>
+
+              {/* NORMALIZER，垂直居于上下两卡片之间 */}
+              <div className="flex justify-center mb-2">
                 <motion.div
                   className="px-4 py-2 rounded-full text-xs font-medium flex items-center gap-2 border border-zinc-800/50"
                   style={{ 
@@ -268,9 +299,9 @@ export function IngestionSection() {
                 </motion.div>
               </div>
 
-              {/* Dashed line to production */}
-              <div className="flex justify-center mb-6">
-                <div className="w-px h-8 border-l border-dashed border-zinc-700/50" />
+              {/* Dashed line from NORMALIZER down到 Production card */}
+              <div className="flex justify-center mb-4">
+                <div className="w-px h-4 border-l border-dashed border-zinc-700/50" />
               </div>
 
               {/* Production Database */}
