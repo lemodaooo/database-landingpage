@@ -46,16 +46,26 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
         ref={ref}
         {...props}
       >
-        <div
-          className={cn(
-            '-z-30 blur-[2px]',
-            'absolute inset-0 overflow-visible [container-type:size]',
-          )}
+        {/* SVG perimeter shimmer: single light segment travelling around border */}
+        <svg
+          className="pointer-events-none absolute inset-0 w-full h-full"
+          viewBox="0 0 100 40"
+          preserveAspectRatio="none"
+          aria-hidden="true"
         >
-          <div className="absolute inset-0 h-[100cqh] animate-shimmer-slide [aspect-ratio:1] [border-radius:0] [mask:none]">
-            <div className="animate-spin-around absolute -inset-full w-auto rotate-0 [background:conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))] [translate:0_0]" />
-          </div>
-        </div>
+          <rect
+            className="shimmer-border"
+            x="1"
+            y="1"
+            width="98"
+            height="38"
+            rx="20"
+            ry="20"
+            pathLength={1}
+            fill="none"
+          />
+        </svg>
+
         {children}
 
         <div
