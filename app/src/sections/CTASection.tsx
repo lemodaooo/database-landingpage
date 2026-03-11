@@ -52,17 +52,22 @@ export function CTASection() {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 relative z-10 mt-[60px]">
+              {/* Primary CTA - match navbar Sign In size & style */}
               <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-3.5 bg-blue hover:bg-blue-dark text-white text-sm font-medium rounded-xl transition-colors duration-200"
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 22, mass: 0.7 }}
+                className="beautiful-button"
               >
                 Start for free
               </motion.button>
+
+              {/* Secondary CTA - same size & radius, outline style */}
               <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-3.5 bg-transparent hover:bg-white/5 text-white text-sm font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 22, mass: 0.7 }}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-medium rounded-full border border-zinc-700 bg-transparent text-white"
               >
                 Contact Sales
               </motion.button>

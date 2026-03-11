@@ -60,7 +60,11 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-wrap gap-4"
             >
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
+              >
                 <ShimmerButton
                   className="flex items-center gap-2 px-6 py-3 text-sm font-medium"
                   background="rgba(24,24,27,0.9)"
@@ -70,14 +74,17 @@ export function HeroSection() {
                   <ArrowRight className="w-4 h-4" />
                 </ShimmerButton>
               </motion.div>
-              {/* Documentation - static outline button, no shimmer / motion effect */}
-              <button
+              {/* Documentation - outline button with matching spring interaction */}
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
                 className="flex items-center gap-2 px-6 py-3 bg-transparent text-white text-sm font-medium rounded-full border border-zinc-700"
               >
                 <FileText className="w-4 h-4" />
                 Documentation
-              </button>
+              </motion.button>
             </motion.div>
 
             {/* Trusted By - Refined logos */}

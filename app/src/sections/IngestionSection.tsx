@@ -196,6 +196,7 @@ export function IngestionSection() {
             <motion.a
               href="#"
               whileHover={{ x: 4 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 18, mass: 0.7 }}
               className="inline-flex items-center gap-2 text-blue hover:text-blue-light transition-colors duration-200"
             >
               Explore integrations
