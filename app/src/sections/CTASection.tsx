@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { SparklesCore } from '@/components/ui/sparkles';
 
 export function CTASection() {
   return (
@@ -24,25 +25,48 @@ export function CTASection() {
               your data stack?
             </span>
           </h2>
-          <p className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Join engineering teams at high-growth companies who trust Nexastream
-            for mission-critical data ingestion.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-8 py-3.5 bg-blue hover:bg-blue-dark text-white text-sm font-medium rounded-xl transition-colors duration-200"
+          <div className="relative">
+            <div
+              className="absolute left-1/2 -translate-x-1/2 w-full max-w-[40rem] h-40"
+              style={{ top: '-43px' }}
             >
-              Start for free
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-8 py-3.5 bg-transparent hover:bg-white/5 text-white text-sm font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
-            >
-              Contact Sales
-            </motion.button>
+              <div
+                className="w-full h-full relative bg-transparent overflow-hidden"
+                style={{
+                  maskImage: 'radial-gradient(ellipse 85% 100% at 50% 18%, black 0%, black 25%, transparent 82%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 85% 100% at 50% 18%, black 0%, black 25%, transparent 82%)',
+                }}
+              >
+                <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+                <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+                <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+                <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+                <SparklesCore
+                  background="transparent"
+                  minSize={0.4}
+                  maxSize={1}
+                  particleDensity={1200}
+                  className="w-full h-full"
+                  particleColor="#FFFFFF"
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-4 relative z-10 mt-[60px]">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-3.5 bg-blue hover:bg-blue-dark text-white text-sm font-medium rounded-xl transition-colors duration-200"
+              >
+                Start for free
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-3.5 bg-transparent hover:bg-white/5 text-white text-sm font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
+              >
+                Contact Sales
+              </motion.button>
+            </div>
           </div>
         </motion.div>
       </div>

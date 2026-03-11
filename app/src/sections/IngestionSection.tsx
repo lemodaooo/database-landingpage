@@ -1,5 +1,66 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+
+type Point = {
+  x: number;
+  y: number;
+};
+
+interface ConnectorPathProps {
+  start: Point;
+  end: Point;
+  bend?: number;
+  opacity?: number;
+}
+
+function ConnectorPath({ start, end, bend = 120, opacity = 0.75 }: ConnectorPathProps) {
+  // 水平跨度与垂直跨度
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const minY = Math.min(start.y, end.y);
+  const maxY = Math.max(start.y, end.y);
+
+  // 基础曲率：在起点和终点之间形成明显弧度，但限制在 bend 以内
+  const baseCurvature = Math.min(Math.abs(dy) * 0.6, bend);
+
+  // 初始控制点（沿直线分布，再向下“拉弯”一些）
+  let cp1Y = start.y + dy * 0.25 + baseCurvature * 0.4;
+  let cp2Y = start.y + dy * 0.75 + baseCurvature * 0.7;
+
+  // 保证控制点不超过起点和终点的垂直范围
+  cp1Y = Math.max(minY, Math.min(maxY, cp1Y));
+  cp2Y = Math.max(minY, Math.min(maxY, cp2Y));
+
+  const cp1 = {
+    x: start.x + dx * 0.25,
+    y: cp1Y,
+  };
+  const cp2 = {
+    x: start.x + dx * 0.75,
+    y: cp2Y,
+  };
+
+  const d = `M ${start.x} ${start.y}
+             C ${cp1.x} ${cp1.y},
+               ${cp2.x} ${cp2.y},
+               ${end.x} ${end.y}`;
+
+  return (
+    <path
+      d={d}
+      fill="none"
+      stroke="url(#ingestCurveGrad)"
+      strokeWidth={0.7}
+      strokeLinecap="round"
+      strokeDasharray="4 4"
+      opacity={opacity}
+      style={{
+        filter: 'drop-shadow(0 0 6px rgba(71, 132, 255, 0.35))',
+      }}
+    />
+  );
+}
 
 const sources = [
   { name: 'Stripe', icon: 'S' },
@@ -17,6 +78,85 @@ const processors = [
 ];
 
 export function IngestionSection() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const leftRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const rightRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const centerRef = useRef<HTMLDivElement | null>(null);
+
+  const [leftAnchors, setLeftAnchors] = useState<Point[]>([]);
+  const [rightAnchors, setRightAnchors] = useState<Point[]>([]);
+  const [centerPoint, setCenterPoint] = useState<Point | null>(null);
+
+  useEffect(() => {
+    const updatePositions = () => {
+      const container = containerRef.current;
+      const center = centerRef.current;
+      if (!container || !center) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const centerRect = center.getBoundingClientRect();
+
+      const getBottomCenter = (el: HTMLDivElement | null): Point | null => {
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return {
+          x: r.left - containerRect.left + r.width / 2,
+          y: r.top - containerRect.top + r.height,
+        };
+      };
+
+      // POST 卡片顶部中心点（向上偏移 15px 作为连线终点）
+      const x = centerRect.left - containerRect.left + centerRect.width / 2;
+      const y = centerRect.top - containerRect.top - 25;
+
+      const leftPoints = leftRefs.current.map(getBottomCenter).filter(Boolean) as Point[];
+      const rightPoints = rightRefs.current.map(getBottomCenter).filter(Boolean) as Point[];
+
+      setLeftAnchors(leftPoints);
+      setRightAnchors(rightPoints);
+      setCenterPoint({ x, y });
+    };
+
+    updatePositions();
+
+    const onResize = () => updatePositions();
+    window.addEventListener('resize', onResize);
+
+    const ro = new ResizeObserver(() => updatePositions());
+    if (containerRef.current) ro.observe(containerRef.current);
+    if (centerRef.current) ro.observe(centerRef.current);
+    leftRefs.current.forEach((el) => el && ro.observe(el));
+    rightRefs.current.forEach((el) => el && ro.observe(el));
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      ro.disconnect();
+    };
+  }, []);
+
+  const allLines = useMemo(() => {
+    if (!centerPoint) return [];
+    const lines: { start: Point; end: Point; opacity: number }[] = [];
+
+    leftAnchors.forEach((p, i) => {
+      lines.push({
+        start: p,
+        end: centerPoint,
+        opacity: 0.72 + i * 0.04,
+      });
+    });
+
+    rightAnchors.forEach((p, i) => {
+      lines.push({
+        start: p,
+        end: centerPoint,
+        opacity: 0.72 + i * 0.04,
+      });
+    });
+
+    return lines;
+  }, [leftAnchors, rightAnchors, centerPoint]);
+
   return (
     <section className="py-24 relative overflow-hidden bg-transparent">
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
@@ -72,13 +212,31 @@ export function IngestionSection() {
             className="relative"
           >
             <div 
-              className="rounded-3xl border border-zinc-800/50 p-6 overflow-hidden"
+              ref={containerRef}
+              className="rounded-3xl border border-zinc-800/50 p-6 overflow-hidden relative"
               style={{
                 background: 'linear-gradient(180deg, rgba(12, 12, 16, 0.95) 0%, rgba(8, 8, 12, 0.98) 100%)',
               }}
             >
+              {/* Full-container SVG for Bezier curves - behind content */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ zIndex: 0 }}
+              >
+                <defs>
+                  <linearGradient id="ingestCurveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(148, 163, 184, 0.35)" />
+                    <stop offset="35%" stopColor="rgba(102, 153, 255, 0.55)" />
+                    <stop offset="100%" stopColor="rgba(54, 110, 255, 0.95)" />
+                  </linearGradient>
+                </defs>
+                {allLines.map((line, i) => (
+                  <ConnectorPath key={i} start={line.start} end={line.end} bend={110} opacity={line.opacity} />
+                ))}
+              </svg>
+
               {/* Top section - Sources and Processors */}
-              <div className="flex justify-between mb-2">
+              <div className="relative z-10 flex justify-between mb-2">
                 {/* Ingestion Sources */}
                 <div>
                   <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
@@ -97,6 +255,9 @@ export function IngestionSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
+                        ref={(el) => {
+                          leftRefs.current[i] = el;
+                        }}
                       >
                         {source.icon === '✱' ? (
                           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -129,6 +290,9 @@ export function IngestionSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 + i * 0.1 }}
+                        ref={(el) => {
+                          rightRefs.current[i] = el;
+                        }}
                       >
                         {proc.icon === 'aws' ? (
                           <span className="text-xs font-bold">aws</span>
@@ -149,113 +313,10 @@ export function IngestionSection() {
                 </div>
               </div>
 
-              {/* Curved connection lines - from first-row source tiles to POST card */}
-              <div className="relative h-24 -mt-4">
-                <svg
-                  className="absolute inset-0 w-full h-full"
-                  viewBox="0 0 400 96"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  {/* 从 5 个 INGESTION SOURCES 方块底部中心柔和汇聚到 POST 卡片顶部中心
-                      尾段保持近似水平，视觉上在同一高度 */}
-                  <motion.path
-                    d="M35 22 C35 46, 120 60, 185 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                  />
-                  <motion.path
-                    d="M70 22 C70 48, 135 62, 190 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.6 }}
-                  />
-                  <motion.path
-                    d="M105 22 C105 50, 150 64, 195 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.7 }}
-                  />
-                  <motion.path
-                    d="M140 22 C140 52, 165 66, 197 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.75 }}
-                  />
-                  <motion.path
-                    d="M175 22 C175 54, 180 68, 200 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                  />
-
-                  {/* 从 4 个 STREAM PROCESSING 方块底部中心柔和汇聚到 POST 卡片顶部中心
-                      采用与左侧近似镜像的控制点，尾段近似水平 */}
-                  <motion.path
-                    d="M245 48 C240 60, 225 70, 215 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.9 }}
-                  />
-                  <motion.path
-                    d="M280 48 C268 62, 238 72, 210 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 1.0 }}
-                  />
-                  <motion.path
-                    d="M315 48 C296 64, 248 74, 205 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 1.1 }}
-                  />
-                  <motion.path
-                    d="M350 48 C322 66, 255 76, 200 78"
-                    stroke="url(#ingestCurveGrad)"
-                    strokeWidth="1"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 1.2 }}
-                  />
-
-                  <defs>
-                    <linearGradient id="ingestCurveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(148, 163, 184, 0.35)" />
-                      <stop offset="100%" stopColor="rgba(59, 130, 246, 0.6)" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-
               {/* Webhook request card */}
               <motion.div
-                className="mb-2 rounded-2xl border border-zinc-800/50 p-4"
+                ref={centerRef}
+                className="relative z-10 mt-[75px] mb-2 rounded-2xl border border-zinc-800/50 p-4"
                 style={{ background: 'rgba(18, 18, 22, 0.9)' }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -279,12 +340,15 @@ export function IngestionSection() {
               </motion.div>
 
               {/* Dashed line from webhook card down到 NORMALIZER */}
-              <div className="flex justify-center mb-2">
-                <div className="w-px h-4 border-l border-dashed border-zinc-700/50" />
+              <div className="relative z-10 flex justify-center mb-2">
+                <div
+                  className="w-px h-4 border-l border-dashed"
+                  style={{ borderColor: 'rgba(54, 110, 255, 0.7)', borderWidth: '0.7px' }}
+                />
               </div>
 
               {/* NORMALIZER，垂直居于上下两卡片之间 */}
-              <div className="flex justify-center mb-2">
+              <div className="relative z-10 flex justify-center mb-2">
                 <motion.div
                   className="px-4 py-2 rounded-full text-xs font-medium flex items-center gap-2 border border-zinc-800/50"
                   style={{ 
@@ -300,13 +364,16 @@ export function IngestionSection() {
               </div>
 
               {/* Dashed line from NORMALIZER down到 Production card */}
-              <div className="flex justify-center mb-4">
-                <div className="w-px h-4 border-l border-dashed border-zinc-700/50" />
+              <div className="relative z-10 flex justify-center mb-4">
+                <div
+                  className="w-px h-4 border-l border-dashed"
+                  style={{ borderColor: 'rgba(54, 110, 255, 0.7)', borderWidth: '0.7px' }}
+                />
               </div>
 
               {/* Production Database */}
               <motion.div
-                className="rounded-2xl border border-zinc-800/50 p-4"
+                className="relative z-10 rounded-2xl border border-zinc-800/50 p-4"
                 style={{ background: 'rgba(18, 18, 22, 0.9)' }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
