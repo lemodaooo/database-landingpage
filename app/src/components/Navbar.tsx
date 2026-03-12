@@ -20,11 +20,17 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="relative z-50 pt-6"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16">
-          {/* Logo - Dark mode style */}
+          {/* Logo - same blue gradient as Sign In button */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
+              style={{
+                background: 'linear-gradient(to bottom, #61CBFF, #2668ED)',
+                boxShadow: '0 10px 15px -3px rgba(38, 104, 237, 0.25), 0 4px 6px -4px rgba(38, 104, 237, 0.2)',
+              }}
+            >
               <Database className="w-4 h-4 text-white" />
             </div>
             <span className="text-white font-medium text-lg">Nexastream</span>

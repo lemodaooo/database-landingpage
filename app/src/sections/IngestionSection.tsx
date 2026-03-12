@@ -158,8 +158,8 @@ export function IngestionSection() {
   }, [leftAnchors, rightAnchors, centerPoint]);
 
   return (
-    <section className="py-24 relative overflow-hidden bg-transparent">
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <motion.div
@@ -170,13 +170,13 @@ export function IngestionSection() {
             className="space-y-6"
           >
             <h2 
-              className="text-[64px] text-white leading-[1.1]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] text-white leading-[1.1]"
               style={{ fontFamily: "'Hedvig Letters Serif', serif" }}
             >
               Centralize your
               <br />
               <span 
-                className="text-[104px] text-gradient italic leading-[1.1] mt-2 block"
+                className="text-[48px] sm:text-[56px] md:text-[80px] lg:text-[112px] text-gradient italic leading-[1.1] mt-2 block"
                 style={{ fontFamily: "'Italianno', cursive" }}
               >
                 data ingestion

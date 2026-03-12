@@ -42,8 +42,8 @@ const experts = [
 
 export function ExpertsSection() {
   return (
-    <section className="py-24 relative overflow-hidden bg-transparent">
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
@@ -55,13 +55,13 @@ export function ExpertsSection() {
           <div>
             <p className="text-sm text-zinc-500 mb-2">Get matched</p>
             <h2 
-              className="text-[64px] text-white leading-[1.1]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] text-white leading-[1.1]"
               style={{ fontFamily: "'Hedvig Letters Serif', serif" }}
             >
               Get pro help from
               <br />
               <span 
-                className="text-[104px] text-gradient italic leading-[1.1] mt-2 block"
+                className="text-[48px] sm:text-[56px] md:text-[80px] lg:text-[112px] text-gradient italic leading-[1.1] mt-2 block"
                 style={{ fontFamily: "'Italianno', cursive" }}
               >
                 handpicked experts
@@ -69,12 +69,13 @@ export function ExpertsSection() {
             </h2>
           </div>
           <motion.button
+            type="button"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue hover:bg-blue-dark text-white text-sm font-medium rounded-full transition-colors duration-200"
+            className="w-fit shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-blue hover:bg-blue-dark text-white text-sm font-medium rounded-full transition-colors duration-200 border-0 cursor-pointer"
           >
             Find an Expert
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </motion.button>
         </motion.div>
 

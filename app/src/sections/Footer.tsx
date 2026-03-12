@@ -9,9 +9,9 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="mt-[130px] py-16 border-t border-dark-border bg-transparent">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-6 gap-12 mb-12">
+    <footer className="mt-16 sm:mt-24 lg:mt-[130px] py-12 sm:py-16 border-t border-dark-border bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 sm:gap-12 mb-10 sm:mb-12">
           {/* Brand */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -75,7 +75,7 @@ export function Footer() {
           className="pt-8 border-t border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4"
         >
           <p className="text-sm text-zinc-500">
-            © 2024 Nexastream Inc. All rights reserved.
+            © 2026 Nexastream Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />

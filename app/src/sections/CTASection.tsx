@@ -3,8 +3,8 @@ import { SparklesCore } from '@/components/ui/sparkles';
 
 export function CTASection() {
   return (
-    <section className="py-24 relative overflow-hidden bg-transparent">
-      <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
+    <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-transparent">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -13,13 +13,13 @@ export function CTASection() {
           className="space-y-8"
         >
           <h2 
-            className="text-[64px] text-white leading-[1.1]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] text-white leading-[1.1]"
             style={{ fontFamily: "'Hedvig Letters Serif', serif" }}
           >
             Ready to unify
             <br />
             <span 
-              className="text-[104px] text-gradient italic leading-[1.1] mt-2 block"
+              className="text-[48px] sm:text-[56px] md:text-[80px] lg:text-[112px] text-gradient italic leading-[1.1] mt-2 block"
               style={{ fontFamily: "'Italianno', cursive" }}
             >
               your data stack?

@@ -17,13 +17,10 @@ function App() {
 
       {/* Frosted Glass Container (Content inside, scrolls with page) */}
       <div
-        className="relative z-10 pointer-events-auto"
+        className="relative z-10 pointer-events-auto mt-10 mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-24 2xl:mx-[160px]"
         style={{
-          marginTop: '40px',
-          marginLeft: '160px',
-          marginRight: '160px',
           marginBottom: '0px',
-          background: 'rgba(255, 255, 255, 0.003)', // 0.3% 白色透明度，几乎完全透明
+          background: 'rgba(255, 255, 255, 0.003)',
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           borderRadius: '24px',

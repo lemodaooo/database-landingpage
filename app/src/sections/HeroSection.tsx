@@ -4,9 +4,9 @@ import { ShimmerButton } from '@/components/ShimmerButton';
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen pt-24 pb-16 overflow-hidden bg-transparent">
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-160px)]">
+    <section className="relative min-h-screen pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[calc(100vh-140px)] sm:min-h-[calc(100vh-160px)]">
           {/* Left content */}
           <div className="space-y-8">
             {/* Version badge */}
@@ -29,13 +29,13 @@ export function HeroSection() {
               className="space-y-2"
             >
               <h1 
-                className="text-[64px] text-white leading-[1.1]"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] text-white leading-[1.1]"
                 style={{ fontFamily: "'Hedvig Letters Serif', serif" }}
               >
                 Orchestrate
               </h1>
               <h1 
-                className="text-[104px] italic text-gradient leading-[1.1]"
+                className="text-[48px] sm:text-[56px] md:text-[80px] lg:text-[112px] italic text-gradient leading-[1.1]"
                 style={{ fontFamily: "'Italianno', cursive" }}
               >
                 live insights
@@ -53,46 +53,50 @@ export function HeroSection() {
               instantly.
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap gap-4"
-            >
+            {/* CTA Buttons + line (same width as buttons), position unchanged */}
+            <div className="w-fit">
               <motion.div
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.97, y: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap gap-4"
               >
-                <ShimmerButton
-                  className="flex items-center gap-2 px-6 py-3 text-sm font-medium"
-                  background="rgba(24,24,27,0.9)"
-                  borderRadius="999px"
+                <motion.div
+                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
                 >
-                  Start building
-                  <ArrowRight className="w-4 h-4" />
-                </ShimmerButton>
+                  <ShimmerButton
+                    className="flex items-center gap-2 px-6 py-3 text-sm font-medium"
+                    background="rgba(24,24,27,0.9)"
+                    borderRadius="999px"
+                  >
+                    Start building
+                    <ArrowRight className="w-4 h-4" />
+                  </ShimmerButton>
+                </motion.div>
+                {/* Documentation - outline button with matching spring interaction */}
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
+                  className="flex items-center gap-2 px-6 py-3 bg-transparent text-white text-sm font-medium rounded-full border border-zinc-700"
+                >
+                  <FileText className="w-4 h-4" />
+                  Documentation
+                </motion.button>
               </motion.div>
-              {/* Documentation - outline button with matching spring interaction */}
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.97, y: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 20, mass: 0.7 }}
-                className="flex items-center gap-2 px-6 py-3 bg-transparent text-white text-sm font-medium rounded-full border border-zinc-700"
-              >
-                <FileText className="w-4 h-4" />
-                Documentation
-              </motion.button>
-            </motion.div>
+              {/* Line: 67px below buttons (was 82px, up 15px) */}
+              <div className="mt-[67px] border-t border-zinc-800/50" aria-hidden="true" />
+            </div>
 
-            {/* Trusted By - Refined logos */}
+            {/* Trusted By - Refined logos (full width, spacing from line) */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="pt-8 border-t border-zinc-800/50"
+              className="pt-8"
             >
               <p className="text-xs text-zinc-500 uppercase tracking-wider mb-4">
                 Trusted by engineering teams at
@@ -129,13 +133,73 @@ export function HeroSection() {
           </div>
 
           {/* Right content - Floating Cards */}
-          <div className="relative h-[500px] lg:h-[600px] -translate-x-10">
+          <div className="relative min-h-[400px] h-[500px] lg:h-[600px] -translate-x-4 lg:-translate-x-10">
+            {/* Three pill-shaped orbits beneath cards, above glass layer */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-[-40px] h-[340px] lg:h-[400px] flex justify-center">
+              <svg
+                className="h-full w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[520px] overflow-visible"
+                viewBox="0 0 520 260"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g transform="translate(50 -40) rotate(45 260 130) scale(-1 1) translate(-520 0)">
+                  {[
+                    { offsetY: -280 },
+                    { offsetY: 0 },
+                    { offsetY: 280 },
+                  ].map(({ offsetY }, idx) => {
+                    const cx = 260;
+                    const cy = 130 + offsetY;
+
+                    // Explicit sizes per pill, kept centered on the same axis
+                    const w = idx === 1 ? 800 : 400;
+                    const h = idx === 1 ? 200 : 160;
+                    const x = cx - w / 2;
+                    const y = cy - h / 2;
+
+                    return (
+                      <g key={idx}>
+                        {/* Base pill outline */}
+                        <rect
+                          className="hero-ellipse-ring"
+                          x={x}
+                          y={y}
+                          width={w}
+                          height={h}
+                          rx={h / 2}
+                          ry={h / 2}
+                          pathLength={100}
+                        />
+                        {/* Three glowing segments orbiting around the pill */}
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <rect
+                            key={i}
+                            className="hero-ellipse-glow"
+                            x={x}
+                            y={y}
+                            width={w}
+                            height={h}
+                            rx={h / 2}
+                            ry={h / 2}
+                            pathLength={100}
+                            style={{
+                              // 8s 一圈，3 条等分：用负 delay 做相位错开
+                              animationDelay: `${-(8 / 3) * i}s`,
+                            }}
+                          />
+                        ))}
+                      </g>
+                    );
+                  })}
+                </g>
+              </svg>
+            </div>
             {/* Card 1 - DELIVER (Top Right) */}
             <motion.div
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-0 right-[80px] w-[220px]"
+              className="absolute top-0 right-[5%] w-[160px] sm:w-[200px] lg:right-[80px] lg:w-[220px]"
             >
               <motion.div
                 animate={{ y: [-6, 6, -6] }}
@@ -183,7 +247,7 @@ export function HeroSection() {
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-[180px] right-[140px] w-[240px]"
+              className="absolute top-[140px] sm:top-[160px] right-[10%] sm:right-[12%] lg:top-[180px] lg:right-[140px] w-[180px] sm:w-[210px] lg:w-[240px]"
             >
               <motion.div
                 animate={{ y: [-8, 8, -8] }}
@@ -234,7 +298,7 @@ export function HeroSection() {
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-[380px] right-[100px] w-[220px]"
+              className="absolute top-[300px] sm:top-[340px] right-[5%] sm:right-[8%] lg:top-[380px] lg:right-[100px] w-[160px] sm:w-[200px] lg:w-[220px]"
             >
               <motion.div
                 animate={{ y: [-5, 5, -5] }}

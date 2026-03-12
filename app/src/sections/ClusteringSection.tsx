@@ -3,8 +3,8 @@ import { Search, FileText, Users, BookOpen, Edit3, Code2 } from 'lucide-react';
 
 export function ClusteringSection() {
   return (
-    <section className="py-24 relative overflow-hidden bg-transparent">
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
@@ -14,13 +14,13 @@ export function ClusteringSection() {
           className="text-center mb-16"
         >
           <h2 
-            className="text-[64px] text-white mb-2 leading-[1.1]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] text-white mb-2 leading-[1.1]"
             style={{ fontFamily: "'PP Editorial New', 'Hedvig Letters Serif', serif" }}
           >
             Intelligent clustering via
           </h2>
           <h2 
-            className="text-[104px] italic text-gradient mb-6 leading-[1.1]"
+            className="text-[48px] sm:text-[56px] md:text-[80px] lg:text-[112px] italic text-gradient mb-6 leading-[1.1]"
             style={{ fontFamily: "'Italianno', cursive" }}
           >
             semantic context
